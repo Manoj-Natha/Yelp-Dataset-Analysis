@@ -2,9 +2,7 @@
 
 Aim: 
 
-Performing pre-processing and aggregation with complex joins on large Yelp dataset.
-
-Derived meaningful statistics using spark and compared the same with Hadoop MapReduce program.
+Perform pre-processing and aggregation with complex joins on large Yelp dataset. Derive meaningful statistics using spark and compared the same with Hadoop MapReduce program.
 
 Dataset Description:
 

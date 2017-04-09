@@ -2,7 +2,7 @@ For MapReduce use these instructions:
 
 Execution: 
 
-hadoop jar yelp.jar <programName> <inputPath> <outputPath>
+hadoop jar yelp.jar \<programName\> \<inputPath\> \<outputPath\>
 
 example:
 

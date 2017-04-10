@@ -1,24 +1,17 @@
-val user=sc.textFile("/yelpdatafall/user/user.csv").map(lines=>lines.split("\\^"))
+Console.print("Enter the Name : ")
 
-val review=sc.textFile("/yelpdatafall/review/review.csv").map(lines=>lines.split("\\^"))
+var name=scala.io.StdIn.readLine()
 
-val sum=review.map(line=>(line(1),line(3).toDouble)).reduceByKey((a,b)=>a+b)
+val user=sc.textFile("file///C:/spark-2.0.1-bin-hadoop2.7/data/user.csv").map(lines=>lines.split("\\^"))
 
-val count=review.map(line=>(line(1),1)).reduceByKey((a,b)=>a+b)
+val namedUsers = user.filter(line => line(1).equalsIgnoreCase(name)).map(line => (line(0),line(1)))  
 
-val rsjoin=sum.join(count) 
+val reviews=sc.textFile("file///C:/spark-2.0.1-bin-hadoop2.7/data/review.csv").map(lines=>lines.split("\\^")) 
 
-val reviewOut=rsjoin.map(a=>(a._1,a._2._1/a._2._2)) 
+val sumOfStars=reviews.map(line=>(line(1),line(3).toDouble)).reduceByKey((a,b)=>a+b)
 
-val input=Console.readLine()
+val noOfRatings=reviews.map(line=>(line(1),1)).reduceByKey((a,b)=>a+b)
 
-val query=user.filter(line=>line(1).contains(input)).map(line=>(line(0).toString,line(1).toString))
+val avgRatingsInfo = sumOfStars.join(noOfRatings).map(a=>(a._1,a._2._1/a._2._2))
 
-val userData=user.map(line=>(line(0).toString,line(1).toString)) 
-
-val out=reviewOut.join(userData) 
-
-val finalOutput=out.join(query).distinct.collect()
-
-finalOutput.foreach(line=>println(line._1,line._2._1._2, line._2._1._1)) 
-
+val namedRatings = namedUsers.join(avgRatingsInfo).collect.foreach(x => println(x._1, x._2._2 ))
